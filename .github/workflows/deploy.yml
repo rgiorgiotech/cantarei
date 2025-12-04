@@ -5,6 +5,10 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
+  schedule:
+    - cron: '0 4 * * *'
+    # Ogni mattina alle 4 viene eseguito nuovo deployment per aggiornare le date degli eventi
+
 permissions:
   contents: read
   pages: write
@@ -19,9 +23,6 @@ jobs:
       
       - name: Install, build, and upload your site
         uses: withastro/action@v2
-        # with:
-          # path: . # Usa questo se il sito è nella root (default)
-          # node-version: 20 # Opzionale
 
   deploy:
     needs: build
