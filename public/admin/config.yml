@@ -1,12 +1,11 @@
 backend:
-  name: git-gateway
+  name: github
+  repo: rgiorgiotech/cantarei
   branch: main
-
-publish_mode: editorial_workflow
 
 # Dove salvare le immagini caricate dal CMS
 media_folder: "public/assets"
-public_folder: "/assets"
+public_folder: "public"
 
 # Configurazione collezioni
 collections:
