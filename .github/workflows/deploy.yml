@@ -1,36 +1,35 @@
-name: Deploy su Aruba 🚀
+name: Deploy to GitHub Pages 🚀
 
 on:
   push:
-    branches:
-      - main # Esegue il deploy ogni volta che c'è un push sul branch main
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 
 jobs:
-  web-deploy:
-    name: 🎉 Deploy
+  build:
     runs-on: ubuntu-latest
     steps:
-    - name: 🚚 Get latest code
-      uses: actions/checkout@v4
+      - name: Checkout your repository using git
+        uses: actions/checkout@v4
+      
+      - name: Install, build, and upload your site
+        uses: withastro/action@v2
+        # with:
+          # path: . # Usa questo se il sito è nella root (default)
+          # node-version: 20 # Opzionale
 
-    - name: 🟢 Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: 20
-
-    - name: 📦 Install dependencies
-      run: npm install
-
-    - name: 🔨 Build Project
-      run: npm run build
-      # Questo crea la cartella 'dist' con il sito statico
-
-    - name: 📂 Sync files to Aruba FTP
-      uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-      with:
-        server: ${{ secrets.FTP_SERVER }}
-        username: ${{ secrets.FTP_USERNAME }}
-        password: ${{ secrets.FTP_PASSWORD }}
-        local-dir: ./dist/
-        server-dir: ./www.cantarei.it/
-        dangerous-clean-slate: false
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
