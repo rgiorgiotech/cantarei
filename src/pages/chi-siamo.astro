@@ -54,36 +54,28 @@ import { director, boardMembers, choirMembers } from "../data/team";
 
     <section class="py-20 bg-white border-y border-gray-100">
         <Container>
-            <div class="flex flex-col lg:flex-row gap-12 items-center">
-                <div class="lg:w-1/3 flex-shrink-0">
-                    <div
-                        class="relative rounded-2xl overflow-hidden shadow-xl aspect-[3/4] group"
+            <div class="max-w-4xl mx-auto space-y-10">
+                <div class="text-center space-y-3">
+                    <h2
+                        class="text-4xl md:text-5xl font-bold text-text-primary"
                     >
-                        <div
-                            class="absolute inset-0 bg-gray-200 flex items-center justify-center text-gray-400"
-                        >
-                            [Foto Maestro Terzo]
-                        </div>
+                        {director.name}
+                    </h2>
+                    <div
+                        class="inline-block h-1 w-20 bg-accent-primary rounded-full"
+                    >
                     </div>
+                    <p
+                        class="text-xl font-medium text-accent-primary uppercase tracking-widest"
+                    >
+                        {director.role}
+                    </p>
                 </div>
 
-                <div class="lg:w-2/3 space-y-6">
-                    <div class="space-y-2">
-                        <h2 class="text-4xl font-bold text-text-primary">
-                            {director.name}
-                        </h2>
-                        <p
-                            class="text-xl font-medium text-accent-primary uppercase tracking-wider"
-                        >
-                            {director.role}
-                        </p>
-                    </div>
-
-                    <div
-                        class="prose prose-lg text-gray-600 space-y-4 text-justify"
-                    >
-                        {director.bio.map((paragraph) => <p>{paragraph}</p>)}
-                    </div>
+                <div
+                    class="prose prose-lg text-gray-700 mx-auto leading-relaxed text-justify"
+                >
+                    {director.bio.map((paragraph) => <p>{paragraph}</p>)}
                 </div>
             </div>
         </Container>
