@@ -1,10 +1,12 @@
 ---
 // src/components/Footer.astro
+import Container from "./ui/Container.astro"; // <--- 1. IMPORTA
+
 const currentYear = new Date().getFullYear();
 ---
 
 <div class="bg-background-secondary py-8 border-t border-gray-200 mt-auto">
-    <div class="content-container">
+    <Container>
         <div
             class="flex flex-col sm:flex-row justify-center items-center gap-8 sm:gap-12 opacity-90 grayscale hover:grayscale-0 transition-all duration-500"
         >
@@ -19,11 +21,11 @@ const currentYear = new Date().getFullYear();
                 class="h-12 sm:h-16 object-contain mix-blend-multiply"
             />
         </div>
-    </div>
+    </Container>
 </div>
 
 <footer class="bg-footer-bg text-footer-text py-12">
-    <div class="content-container">
+    <Container>
         <div
             class="grid grid-cols-1 md:grid-cols-3 gap-12 text-center md:text-left"
         >
@@ -67,7 +69,7 @@ const currentYear = new Date().getFullYear();
             <div class="md:text-right space-y-4 flex flex-col justify-between">
                 <div>
                     <a
-                        href="/assets/docs/informativa-privacy-ver-1.pdf"
+                        href="/assets/docs/informativa-privacy.pdf"
                         target="_blank"
                         rel="noopener noreferrer"
                         class="text-sm opacity-60 hover:opacity-100 hover:text-white underline transition-all"
@@ -79,13 +81,14 @@ const currentYear = new Date().getFullYear();
                     <p>&copy; {currentYear} Canta Rei APS</p>
                     <p class="mt-1">
                         Created with ❤️ by <a
-                            href="https://www.giorgiomessina.eu"
+                            href="https://giorgiomessina.eu"
                             target="_blank"
                             class="hover:text-white underline"
-                            >Giorgio Messina</a>
+                            >Giorgio Messina</a
+                        >
                     </p>
                 </div>
             </div>
         </div>
-    </div>
+    </Container>
 </footer>
