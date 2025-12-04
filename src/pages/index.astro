@@ -1,16 +1,244 @@
 ---
+// src/pages/index.astro
+import Layout from "../layouts/Layout.astro";
+import Container from "../components/ui/Container.astro";
+import Button from "../components/ui/Button.astro";
+import { getCollection } from "astro:content";
 
+// Recupero eventi
+const allEvents = await getCollection("events");
+const sortedEvents = allEvents.sort(
+	(a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+);
+const recentEvents = sortedEvents.slice(0, 2);
+
+const formatDate = (date: Date) => {
+	return new Intl.DateTimeFormat("it-IT", {
+		day: "numeric",
+		month: "long",
+		year: "numeric",
+	}).format(date);
+};
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout title="Home">
+	<section class="relative py-20 md:py-32 overflow-hidden">
+		<Container>
+			<div
+				class="flex flex-col items-center text-center max-w-4xl mx-auto space-y-8 animate-fade-in"
+			>
+				<h1
+					class="text-5xl md:text-7xl font-bold text-accent-primary tracking-tight text-balance"
+				>
+					Coro Polifonico <br class="hidden md:block" /> Canta Rei APS
+				</h1>
+				<p
+					class="text-xl md:text-2xl text-gray-700 leading-relaxed max-w-2xl text-balance"
+				>
+					Armonia, passione e tradizione a Palermo. <br />
+					Un viaggio musicale che unisce cuori e culture dal 2024.
+				</p>
+				<div class="flex flex-wrap justify-center gap-4 pt-4">
+					<Button href="/chi-siamo" variant="primary"
+						>Scopri chi siamo</Button
+					>
+					<Button href="/eventi" variant="secondary"
+						>Prossimi eventi</Button
+					>
+				</div>
+			</div>
+		</Container>
+	</section>
+
+	<section class="py-16 bg-white border-y border-gray-100">
+		<Container>
+			<div class="grid md:grid-cols-2 gap-12 items-center">
+				<div class="space-y-6 order-2 md:order-1">
+					<h2
+						class="text-4xl font-bold text-text-primary tracking-tight"
+					>
+						Una nuova voce, <span class="text-accent-primary"
+							>stessa anima</span>
+					</h2>
+					<div class="prose text-lg text-gray-600 space-y-4">
+						<p>
+							L'Associazione Coro Polifonico Canta Rei APS nasce
+							ufficialmente il 16 aprile 2024, ma le nostre radici
+							sono profonde. Siamo un gruppo di circa 30 cantori
+							che condivide un percorso decennale, uniti dalla
+							volontà di rinnovarsi senza dimenticare la propria
+							storia.
+						</p>
+						<p>
+							Siamo un'associazione no-profit, apartitica e
+							apolitica, dove la musica diventa strumento di
+							coesione sociale.
+						</p>
+					</div>
+					<Button href="/chi-siamo" variant="secondary" class="mt-4"
+						>La nostra storia</Button
+					>
+				</div>
+				<div
+					class="order-1 md:order-2 relative h-64 md:h-96 rounded-2xl overflow-hidden shadow-xl rotate-1 transition-transform hover:rotate-0 duration-500"
+				>
+					<div
+						class="absolute inset-0 bg-gray-200 flex items-center justify-center text-gray-400"
+					>
+						[Inserire Foto Coro Qui]
+					</div>
+				</div>
+			</div>
+		</Container>
+	</section>
+
+	<section class="py-20 bg-background-primary">
+		<Container>
+			<div class="flex justify-between items-end mb-10">
+				<h2 class="text-3xl md:text-4xl font-bold tracking-tight">
+					Eventi Recenti
+				</h2>
+				<a
+					href="/eventi"
+					class="hidden md:inline-block text-accent-primary font-medium hover:underline decoration-2 underline-offset-4"
+					>Vedi tutti &rarr;</a
+				>
+			</div>
+
+			<div class="grid gap-8">
+				{
+					recentEvents.map((event) => (
+						<article
+							class:list={[
+								"group relative overflow-hidden rounded-2xl bg-white p-6 sm:p-8 shadow-sm transition-all hover:shadow-lg border border-gray-100",
+								event.data.isArsEvent &&
+									"ring-2 ring-accent-primary/20 bg-gradient-to-br from-white to-orange-50",
+							]}
+						>
+							<div class="flex flex-col md:flex-row gap-6 md:items-center justify-between">
+								<div class="space-y-3 flex-1">
+									{event.data.isArsEvent && (
+										<span class="inline-flex items-center rounded-full bg-accent-primary/10 px-3 py-1 text-xs font-bold uppercase tracking-wider text-accent-primary">
+											Rassegna ARS CORI
+										</span>
+									)}
+									<div class="flex items-center gap-3 text-sm text-gray-500 font-medium">
+										<svg
+											xmlns="http://www.w3.org/2000/svg"
+											width="18"
+											height="18"
+											viewBox="0 0 24 24"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="2"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											class="lucide lucide-calendar"
+										>
+											<>
+												<path d="M8 2v4" />
+												<path d="M16 2v4" />
+												<rect
+													width="18"
+													height="18"
+													x="3"
+													y="4"
+													rx="2"
+												/>
+												<path d="M3 10h18" />
+											</>
+										</svg>
+										{formatDate(event.data.date)}
+										{event.data.location && (
+											<>
+												<span>&bull;</span>
+												<span class="flex items-center gap-1">
+													<svg
+														xmlns="http://www.w3.org/2000/svg"
+														width="16"
+														height="16"
+														viewBox="0 0 24 24"
+														fill="none"
+														stroke="currentColor"
+														stroke-width="2"
+														stroke-linecap="round"
+														stroke-linejoin="round"
+														class="lucide lucide-map-pin"
+													>
+														<path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+														<circle
+															cx="12"
+															cy="10"
+															r="3"
+														/>
+													</svg>
+													{event.data.location}
+												</span>
+											</>
+										)}
+									</div>
+									<h3 class="text-2xl font-bold text-gray-900 group-hover:text-accent-primary transition-colors">
+										<a href={`/eventi/${event.slug}`}>
+											<span class="absolute inset-0" />
+											{event.data.title}
+										</a>
+									</h3>
+									<p class="text-gray-600 line-clamp-2 max-w-2xl text-balance">
+										{event.body}
+									</p>
+								</div>
+
+								<div class="flex-shrink-0">
+									<div class="h-12 w-12 rounded-full bg-accent-primary/10 flex items-center justify-center text-accent-primary group-hover:bg-accent-primary group-hover:text-white transition-colors">
+										<svg
+											xmlns="http://www.w3.org/2000/svg"
+											width="24"
+											height="24"
+											viewBox="0 0 24 24"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="2"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											class="lucide lucide-chevron-right"
+										>
+											<path d="m9 18 6-6-6-6" />
+										</svg>
+									</div>
+								</div>
+							</div>
+						</article>
+					))
+				}
+			</div>
+
+			<div class="mt-8 text-center md:hidden">
+				<Button href="/eventi" variant="secondary" class="w-full"
+					>Vedi tutti gli eventi</Button
+				>
+			</div>
+		</Container>
+	</section>
+
+	<section class="py-20 bg-footer-bg text-white text-center">
+		<Container>
+			<div class="max-w-2xl mx-auto space-y-8">
+				<h2 class="text-3xl font-bold">
+					Vuoi unirti a noi o sostenerci?
+				</h2>
+				<p class="text-lg opacity-80 text-balance">
+					Siamo sempre alla ricerca di nuove voci e di persone che
+					credono nel valore della musica. Contattaci per un'audizione
+					o scopri come supportare le nostre attività.
+				</p>
+				<div class="flex justify-center gap-4">
+					<Button
+						href="/contatti"
+						class="bg-white text-footer-bg hover:bg-gray-100 border-transparent"
+						>Contattaci</Button
+					>
+				</div>
+			</div>
+		</Container>
+	</section>
+</Layout>

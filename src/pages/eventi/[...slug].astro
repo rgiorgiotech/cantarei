@@ -1,0 +1,256 @@
+---
+// src/pages/eventi/[...slug].astro
+import { getCollection } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import Container from "../../components/ui/Container.astro";
+import Button from "../../components/ui/Button.astro";
+
+// 1. Genera i percorsi statici per tutti gli eventi
+export async function getStaticPaths() {
+    const events = await getCollection("events");
+    return events.map((event) => ({
+        params: { slug: event.slug },
+        props: { event },
+    }));
+}
+
+// 2. Recupera i dati dell'evento corrente
+const { event } = Astro.props;
+const { Content } = await event.render();
+
+const formatDate = (date: Date) => {
+    return new Intl.DateTimeFormat("it-IT", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+    }).format(date);
+};
+---
+
+<Layout title={event.data.title}>
+    <article class="py-20 animate-fade-in bg-background-primary min-h-screen">
+        <Container>
+            <div class="mb-8">
+                <a
+                    href="/eventi"
+                    class="inline-flex items-center text-gray-600 hover:text-accent-primary transition-colors"
+                >
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="mr-2"><path d="m15 18-6-6 6-6"></path></svg
+                    >
+                    Torna agli eventi
+                </a>
+            </div>
+
+            <div
+                class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden"
+            >
+                <div class="p-8 md:p-12 border-b border-gray-100 text-center">
+                    {
+                        event.data.isArsEvent && (
+                            <span class="inline-block bg-accent-primary/10 text-accent-primary px-4 py-1 rounded-full text-sm font-bold uppercase tracking-wide mb-4">
+                                Rassegna ARS CORI
+                            </span>
+                        )
+                    }
+                    <h1
+                        class="text-4xl md:text-5xl font-bold text-text-primary mb-4 text-balance"
+                    >
+                        {event.data.title}
+                    </h1>
+                    {
+                        event.data.subtitle && (
+                            <p class="text-2xl text-gray-500 mb-6 font-light">
+                                {event.data.subtitle}
+                            </p>
+                        )
+                    }
+
+                    <div
+                        class="flex flex-wrap justify-center gap-6 text-gray-600 font-medium"
+                    >
+                        <div class="flex items-center gap-2">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="20"
+                                height="20"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                class="text-accent-primary"
+                                ><rect width="18" height="18" x="3" y="4" rx="2"
+                                ></rect><path d="M16 2v4"></path><path
+                                    d="M8 2v4"></path><path d="M3 10h18"
+                                ></path></svg
+                            >
+                            {formatDate(event.data.date)}
+                        </div>
+                        {
+                            event.data.location && (
+                                <div class="flex items-center gap-2">
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="20"
+                                        height="20"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        class="text-accent-primary"
+                                    >
+                                        <>
+                                            <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+                                            <circle cx="12" cy="10" r="3" />
+                                        </>
+                                    </svg>
+                                    {event.data.location}
+                                </div>
+                            )
+                        }
+                    </div>
+                </div>
+
+                <div class="p-8 md:p-12">
+                    {
+                        /* Se c'è un Banner (es. Passione Corale), mostralo in grande */
+                    }
+                    {
+                        event.data.banner && (
+                            <div class="mb-12 rounded-xl overflow-hidden shadow-lg">
+                                <img
+                                    src={event.data.banner}
+                                    alt="Banner evento"
+                                    class="w-full h-auto"
+                                />
+                            </div>
+                        )
+                    }
+
+                    <div class="grid lg:grid-cols-3 gap-12">
+                        {/* Colonna Sinistra: Testo e Programmi */}
+                        <div class="lg:col-span-2 space-y-8">
+                            <div
+                                class="prose prose-lg text-gray-700 max-w-none"
+                            >
+                                <Content />
+                            </div>
+
+                            {
+                                /* BLOCCO SPECIALE: Programmi Musicali (se presenti) */
+                            }
+                            {
+                                event.data.programs && (
+                                    <div class="mt-12 space-y-12">
+                                        <h2 class="text-3xl font-bold text-center border-b pb-4">
+                                            Programma Musicale
+                                        </h2>
+                                        <div class="grid md:grid-cols-2 gap-8">
+                                            {event.data.programs.map(
+                                                (program) => (
+                                                    <div class="bg-background-secondary/50 rounded-xl p-6 border border-gray-200">
+                                                        {program.logoUrl && (
+                                                            <img
+                                                                src={
+                                                                    program.logoUrl
+                                                                }
+                                                                alt={
+                                                                    program.title
+                                                                }
+                                                                class="h-16 object-contain mb-4 mx-auto mix-blend-multiply"
+                                                            />
+                                                        )}
+                                                        <h3 class="text-xl font-bold text-center mb-2">
+                                                            {program.title}
+                                                        </h3>
+                                                        <p class="text-center text-sm text-gray-500 mb-6">
+                                                            Dir.{" "}
+                                                            {program.director}
+                                                        </p>
+
+                                                        <ul class="space-y-2 mb-6">
+                                                            {program.items.map(
+                                                                (item) => (
+                                                                    <li class="text-gray-800 text-sm border-b border-gray-200/50 pb-1 last:border-0">
+                                                                        {item}
+                                                                    </li>
+                                                                ),
+                                                            )}
+                                                        </ul>
+
+                                                        {program.musicians && (
+                                                            <div class="text-sm bg-white p-4 rounded-lg">
+                                                                <p class="font-semibold mb-2">
+                                                                    Musicisti:
+                                                                </p>
+                                                                {program.musicians.map(
+                                                                    (m) => (
+                                                                        <div class="flex justify-between">
+                                                                            <span class="text-gray-500">
+                                                                                {
+                                                                                    m.role
+                                                                                }
+                                                                            </span>
+                                                                            <span class="font-medium">
+                                                                                {
+                                                                                    m.name
+                                                                                }
+                                                                            </span>
+                                                                        </div>
+                                                                    ),
+                                                                )}
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                ),
+                                            )}
+                                        </div>
+                                    </div>
+                                )
+                            }
+                        </div>
+
+                        {/* Colonna Destra: Locandina (Sticky) */}
+                        <div class="lg:col-span-1">
+                            {
+                                event.data.poster && (
+                                    <div class="sticky top-24">
+                                        <div class="rounded-xl overflow-hidden shadow-xl border border-gray-100 bg-white p-2 rotate-1 hover:rotate-0 transition-transform duration-500">
+                                            <img
+                                                src={event.data.poster}
+                                                alt={`Locandina ${event.data.title}`}
+                                                class="w-full h-auto rounded-lg"
+                                            />
+                                        </div>
+                                        <div class="mt-6 text-center">
+                                            <Button
+                                                href="/contatti"
+                                                variant="primary"
+                                                class="w-full"
+                                            >
+                                                Contattaci per info
+                                            </Button>
+                                        </div>
+                                    </div>
+                                )
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </Container>
+    </article>
+</Layout>

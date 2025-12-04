@@ -1,0 +1,34 @@
+---
+interface Props {
+    href?: string;
+    variant?: "primary" | "secondary";
+    target?: string;
+    class?: string;
+    // Permettiamo altre props HTML standard (es. onclick, type, etc.)
+    [x: string]: any;
+}
+
+const { href, variant = "primary", class: className, ...rest } = Astro.props;
+
+// Stili base comuni
+const baseStyles =
+    "inline-flex items-center justify-center rounded-md px-6 py-2.5 text-xl font-medium tracking-wide transition-all duration-300 shadow-sm hover:shadow-md cursor-pointer text-center";
+
+// Varianti
+const variants = {
+    primary:
+        "text-white bg-gradient-to-br from-btn-from to-btn-to hover:from-btn-hoverFrom hover:to-btn-hoverTo border border-transparent",
+    secondary:
+        "border border-accent-primary text-accent-primary hover:bg-accent-primary hover:text-white",
+};
+
+const Element = href ? "a" : "button";
+---
+
+<Element
+    href={href}
+    class:list={[baseStyles, variants[variant], className]}
+    {...rest}
+>
+    <slot />
+</Element>

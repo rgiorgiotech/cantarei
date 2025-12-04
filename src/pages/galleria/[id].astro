@@ -1,0 +1,142 @@
+---
+// src/pages/galleria/[id].astro
+import Layout from "../../layouts/Layout.astro";
+import Container from "../../components/ui/Container.astro";
+import Button from "../../components/ui/Button.astro";
+import { galleries } from "../../data/galleries";
+import { ArrowLeft, MapPin, Calendar } from "lucide-astro";
+
+// Importiamo i moduli di Node.js
+import path from "path";
+import fs from "fs"; // <--- Aggiunto fs
+import { imageSize } from "image-size";
+
+// 1. Generiamo i percorsi per ogni galleria
+export async function getStaticPaths() {
+    return galleries.map((gallery) => ({
+        params: { id: gallery.id },
+        props: { gallery },
+    }));
+}
+
+const { gallery } = Astro.props;
+
+// 2. Calcoliamo le dimensioni delle immagini
+const photosWithDimensions = gallery.photos.map((photo) => {
+    try {
+        const filePath = path.join(process.cwd(), "public", photo.src);
+
+        // LEGGIAMO IL FILE PRIMA DI PASSARLO
+        // Questo risolve l'errore "String is not assignable to Uint8Array"
+        const fileBuffer = fs.readFileSync(filePath);
+        const dimensions = imageSize(fileBuffer);
+
+        return {
+            ...photo,
+            // Usiamo il ?? 0 per sicurezza se imageSize fallisce nel trovare le dimensioni
+            width: dimensions.width ?? 0,
+            height: dimensions.height ?? 0,
+        };
+    } catch (e) {
+        console.error(`Impossibile trovare l'immagine: ${photo.src}`, e);
+        return { ...photo, width: 0, height: 0 };
+    }
+});
+---
+
+<Layout title={gallery.title}>
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/photoswipe@5.4.3/dist/photoswipe.css"
+        slot="head"
+    />
+
+    <section class="py-20 bg-background-primary min-h-screen">
+        <Container>
+            <div class="mb-12 animate-fade-in">
+                <Button
+                    href="/foto-e-video"
+                    variant="secondary"
+                    class="mb-8 pl-4 pr-6 text-base"
+                >
+                    <ArrowLeft size={20} class="mr-2" /> Torna agli album
+                </Button>
+
+                <h1
+                    class="text-4xl md:text-5xl font-bold text-text-primary mb-4 text-balance"
+                >
+                    {gallery.title}
+                </h1>
+
+                <div class="flex flex-wrap gap-6 text-gray-600 text-lg">
+                    <div class="flex items-center gap-2">
+                        <Calendar class="text-accent-primary" size={20} />
+                        {gallery.date}
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <MapPin class="text-accent-primary" size={20} />
+                        {gallery.location}
+                    </div>
+                </div>
+            </div>
+
+            <div
+                class="pswp-gallery grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
+                id="my-gallery"
+            >
+                {
+                    photosWithDimensions.map((photo, index) => (
+                        <a
+                            href={photo.src}
+                            data-pswp-width={photo.width}
+                            data-pswp-height={photo.height}
+                            target="_blank"
+                            class="block rounded-lg overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 aspect-[4/3] bg-gray-200 relative group"
+                        >
+                            <img
+                                src={photo.src}
+                                alt={`${gallery.title} - foto ${index + 1}`}
+                                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                loading="lazy"
+                            />
+
+                            <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="32"
+                                    height="32"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                >
+                                    <circle cx="11" cy="11" r="8" />
+                                    <path d="m21 21-4.3-4.3" />
+                                    <path d="M11 8v6" />
+                                    <path d="M8 11h6" />
+                                </svg>
+                            </div>
+                        </a>
+                    ))
+                }
+            </div>
+        </Container>
+    </section>
+</Layout>
+
+<script>
+    import PhotoSwipeLightbox from "photoswipe/lightbox";
+    import PhotoSwipe from "photoswipe";
+
+    const lightbox = new PhotoSwipeLightbox({
+        gallery: "#my-gallery",
+        children: "a",
+        pswpModule: PhotoSwipe,
+        bgOpacity: 0.9,
+        padding: { top: 20, bottom: 20, left: 20, right: 20 },
+    });
+
+    lightbox.init();
+</script>

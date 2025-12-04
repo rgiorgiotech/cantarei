@@ -1,0 +1,36 @@
+name: Deploy su Aruba 🚀
+
+on:
+  push:
+    branches:
+      - main # Esegue il deploy ogni volta che c'è un push sul branch main
+
+jobs:
+  web-deploy:
+    name: 🎉 Deploy
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🚚 Get latest code
+      uses: actions/checkout@v4
+
+    - name: 🟢 Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20
+
+    - name: 📦 Install dependencies
+      run: npm install
+
+    - name: 🔨 Build Project
+      run: npm run build
+      # Questo crea la cartella 'dist' con il sito statico
+
+    - name: 📂 Sync files to Aruba FTP
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      with:
+        server: ${{ secrets.FTP_SERVER }}
+        username: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        local-dir: ./dist/ # Carica solo il contenuto della cartella di build
+        server-dir: ./ # Carica nella root del dominio (o in /www/ se serve)
+        dangerous-clean-slate: true # ATTENZIONE: Cancella i file vecchi su Aruba per tenere pulito

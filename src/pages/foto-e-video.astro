@@ -1,0 +1,82 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Container from "../components/ui/Container.astro";
+import { galleries } from "../data/galleries";
+import { Camera, Calendar, MapPin } from "lucide-astro";
+---
+
+<Layout title="Foto e Video">
+    <section class="py-20 bg-background-primary min-h-screen">
+        <Container>
+            <div class="text-center mb-16 animate-fade-in">
+                <h1 class="text-5xl font-bold text-accent-primary mb-4">
+                    Foto e Video
+                </h1>
+
+                <div
+                    class="flex items-center justify-center gap-3 mt-6 bg-white inline-flex px-6 py-3 rounded-full shadow-sm"
+                >
+                    <span class="text-gray-600 font-medium"
+                        >Sponsor fotografico:</span
+                    >
+                    <img
+                        src="/assets/vincenzo-latino.png"
+                        alt="Vincenzo Latino"
+                        class="h-8 object-contain opacity-80"
+                    />
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {
+                    galleries.map((gallery) => (
+                        <a
+                            href={`/galleria/${gallery.id}`}
+                            class="group block h-full"
+                        >
+                            <div class="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border border-gray-100 h-full flex flex-col">
+                                <div class="aspect-video relative overflow-hidden bg-gray-200">
+                                    <img
+                                        src={gallery.photos[0].src}
+                                        alt={gallery.title}
+                                        class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                    />
+
+                                    <div class="absolute bottom-3 right-3 bg-black/60 text-white text-xs font-bold px-2 py-1 rounded flex items-center gap-1 backdrop-blur-sm">
+                                        <Camera size={14} />
+                                        {gallery.photos.length} foto
+                                    </div>
+                                </div>
+
+                                <div class="p-6 flex-grow flex flex-col">
+                                    <h3 class="text-xl font-bold text-text-primary mb-3 group-hover:text-accent-primary transition-colors line-clamp-2">
+                                        {gallery.title}
+                                    </h3>
+
+                                    <div class="mt-auto space-y-2 text-sm text-gray-500">
+                                        <div class="flex items-center gap-2">
+                                            <Calendar
+                                                size={16}
+                                                class="text-accent-primary"
+                                            />
+                                            {gallery.date}
+                                        </div>
+                                        <div class="flex items-center gap-2">
+                                            <MapPin
+                                                size={16}
+                                                class="text-accent-primary"
+                                            />
+                                            <span class="line-clamp-1">
+                                                {gallery.location}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    ))
+                }
+            </div>
+        </Container>
+    </section>
+</Layout>

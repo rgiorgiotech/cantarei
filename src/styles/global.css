@@ -1,0 +1,10 @@
+/* src/styles/global.css */
+/* Importiamo i pesi che ci servono: 300 (Light), 400 (Regular), 500 (Medium), 700 (Bold) */
+@import "@fontsource/outfit/300.css";
+@import "@fontsource/outfit/400.css";
+@import "@fontsource/outfit/500.css";
+@import "@fontsource/outfit/700.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

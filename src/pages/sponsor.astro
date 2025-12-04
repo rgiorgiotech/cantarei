@@ -1,0 +1,175 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Container from "../components/ui/Container.astro";
+import Card from "../components/ui/Card.astro";
+import Button from "../components/ui/Button.astro";
+---
+
+<Layout title="Sponsor">
+    <section class="py-20 bg-background-primary min-h-screen">
+        <Container>
+            <div class="text-center mb-16 animate-fade-in">
+                <h1 class="text-5xl font-bold text-accent-primary mb-6">
+                    I nostri Partner
+                </h1>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto text-balance">
+                    Siamo orgogliosi di collaborare con istituzioni ed
+                    eccellenze del territorio che sostengono la cultura e la
+                    nostra associazione.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <Card
+                    class="flex flex-col h-full hover:shadow-xl transition-shadow duration-300"
+                >
+                    <div class="flex justify-center mb-8 h-32 items-center">
+                        <img
+                            src="/assets/logo-unipa.png"
+                            alt="Logo Università degli Studi di Palermo"
+                            class="max-h-full max-w-[80%] object-contain"
+                        />
+                    </div>
+                    <div class="flex-grow space-y-4">
+                        <h2
+                            class="text-2xl font-bold text-center text-text-primary"
+                        >
+                            Università degli Studi di Palermo
+                        </h2>
+                        <div class="text-gray-700 space-y-4 leading-relaxed">
+                            <p>
+                                Da oggi <strong>Canta Rei APS</strong> è ufficialmente
+                                attiva come ente accreditato per i <strong
+                                    >tirocini universitari UNIPA</strong
+                                >!
+                            </p>
+                            <p>
+                                Un nuovo passo importante, sancito dalla
+                                convenzione quinquennale, che apre le porte a
+                                studentesse e studenti interessati a fare
+                                esperienza nel mondo della musica e
+                                dell’organizzazione eventi.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="mt-8 text-center pt-6 border-t border-gray-200">
+                        <Button
+                            href="https://www.unipa.it"
+                            target="_blank"
+                            variant="primary"
+                        >
+                            Visita il sito UNIPA
+                        </Button>
+                    </div>
+                </Card>
+
+                <Card
+                    class="flex flex-col h-full hover:shadow-xl transition-shadow duration-300"
+                >
+                    <div class="flex justify-center mb-8 h-32 items-center">
+                        <img
+                            src="/assets/logo-sbc.png"
+                            alt="Logo Sicily by Car"
+                            class="max-h-full max-w-[80%] object-contain bg-white/50 rounded-lg p-2"
+                        />
+                    </div>
+                    <div class="flex-grow space-y-4">
+                        <div class="text-center">
+                            <h2
+                                class="text-2xl font-bold text-text-primary mb-1"
+                            >
+                                Sicily by Car S.p.A.
+                            </h2>
+                            <p
+                                class="text-accent-primary font-medium text-sm uppercase tracking-wide"
+                            >
+                                Partnership esclusiva per associati
+                            </p>
+                        </div>
+
+                        <div class="text-gray-700 space-y-4 leading-relaxed">
+                            <p>
+                                Sconto del <strong>10%</strong> sulla tariffa base
+                                e sugli extra per tutti i nostri associati.
+                                <br /><em class="text-sm text-gray-500"
+                                    >Valido per noleggi con ritiro in Italia
+                                    fino al 22/10/2026.</em
+                                >
+                            </p>
+
+                            <details
+                                class="group bg-white rounded-lg border border-gray-200"
+                            >
+                                <summary
+                                    class="flex justify-between items-center font-medium cursor-pointer list-none p-4 text-accent-primary hover:bg-gray-50 transition-colors rounded-lg select-none"
+                                >
+                                    <span>Scopri di più sull'azienda</span>
+                                    <span
+                                        class="transition-transform group-open:rotate-180"
+                                    >
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            width="20"
+                                            height="20"
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            stroke-width="2"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            ><path d="m6 9 6 6 6-6"></path></svg
+                                        >
+                                    </span>
+                                </summary>
+                                <div
+                                    class="text-gray-600 p-4 pt-0 text-sm border-t border-gray-100 mt-2"
+                                >
+                                    <p class="mb-2">
+                                        Fondata nel 1963, Sicily by Car vanta
+                                        una flotta di oltre 15.000 veicoli e
+                                        presenza in tutti i principali aeroporti
+                                        italiani.
+                                    </p>
+                                    <ul class="list-disc pl-5 space-y-1">
+                                        <li>
+                                            Noleggio auto, furgoni e veicoli
+                                            elettrici
+                                        </li>
+                                        <li>Tariffe mensili e plurimensili</li>
+                                        <li>Noleggio con conducente</li>
+                                    </ul>
+                                </div>
+                            </details>
+
+                            <div
+                                class="border-2 border-dashed border-accent-primary/30 rounded-xl p-6 bg-accent-primary/5 text-center mt-6"
+                            >
+                                <p
+                                    class="text-sm text-gray-500 mb-2 uppercase font-bold tracking-widest"
+                                >
+                                    Codice Convenzione
+                                </p>
+                                <code
+                                    class="block text-3xl font-mono font-bold text-accent-primary mb-4 select-all bg-white py-2 rounded border border-gray-200 mx-auto max-w-[200px]"
+                                    >CNCANTA25</code
+                                >
+
+                                <Button
+                                    href="https://www.sicilybycar.it/index.aspx?conv=CNCANTA25"
+                                    target="_blank"
+                                    variant="primary"
+                                    class="w-full"
+                                >
+                                    Prenota ora con lo sconto
+                                </Button>
+                                <p class="text-xs text-gray-500 mt-3">
+                                    Richiesto documento di iscrizione al ritiro.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </Card>
+            </div>
+        </Container>
+    </section>
+</Layout>

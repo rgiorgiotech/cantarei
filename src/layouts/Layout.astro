@@ -1,0 +1,39 @@
+---
+// src/layouts/Layout.astro
+import "../styles/global.css";
+import Header from "../components/Header.astro"; // Lo creeremo tra poco
+import Footer from "../components/Footer.astro"; // Lo creeremo tra poco
+import { ViewTransitions } from "astro:transitions"; // Chicca moderna: navigazione fluida tipo SPA
+
+interface Props {
+    title: string;
+    description?: string;
+}
+
+const { title, description = "Coro Polifonico Canta Rei APS - Palermo" } =
+    Astro.props;
+---
+
+<!doctype html>
+<html lang="it">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="description" content={description} />
+        <meta name="viewport" content="width=device-width" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <meta name="generator" content={Astro.generator} />
+        <title>{title} | Canta Rei APS</title>
+        <ViewTransitions />
+    </head>
+    <body
+        class="flex flex-col min-h-screen bg-background-primary text-text-primary font-sans antialiased"
+    >
+        <Header />
+
+        <main class="flex-grow animate-fade-in">
+            <slot />
+        </main>
+
+        <Footer />
+    </body>
+</html>
