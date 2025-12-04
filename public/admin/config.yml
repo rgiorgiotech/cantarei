@@ -4,14 +4,14 @@ backend:
   branch: main
 
 # Dove salvare le immagini caricate dal CMS
-media_folder: "public/assets/uploads"
-public_folder: "/assets/uploads"
+media_folder: "public/assets"
+public_folder: "public"
 
 # Configurazione collezioni
 collections:
   - name: "events"
     label: "Eventi"
-    folder: "src/content/events" # Dove Astro legge i file
+    folder: "src/content/events"
     create: true
     slug: "{{slug}}" # Usa il titolo come nome file
     fields:

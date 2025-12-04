@@ -31,6 +31,6 @@ jobs:
         server: ${{ secrets.FTP_SERVER }}
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
-        local-dir: ./dist/ # Carica solo il contenuto della cartella di build
-        server-dir: ./ # Carica nella root del dominio (o in /www/ se serve)
-        dangerous-clean-slate: true # ATTENZIONE: Cancella i file vecchi su Aruba per tenere pulito
+        local-dir: ./dist/
+        server-dir: ./www.cantarei.it/
+        dangerous-clean-slate: false
