@@ -1,0 +1,67 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Container from "../components/ui/Container.astro";
+import Button from "../components/ui/Button.astro";
+---
+
+<Layout title="Pagina non trovata - 404" simplePage={false}>
+    <section
+        class="min-h-screen flex items-center justify-center bg-gray-50 text-center px-4"
+    >
+        <Container>
+            <div class="max-w-2xl mx-auto space-y-8 animate-fade-in">
+                <div class="relative">
+                    <h1 class="text-9xl font-black text-gray-200 select-none">
+                        404
+                    </h1>
+                    <div
+                        class="absolute inset-0 flex items-center justify-center"
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="64"
+                            height="64"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            class="text-accent-primary mb-4"
+                            ><path d="M9 18V5l12-2v13"></path><circle
+                                cx="6"
+                                cy="18"
+                                r="3"></circle><circle cx="18" cy="16" r="3"
+                            ></circle></svg
+                        >
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <h2
+                        class="text-3xl md:text-4xl font-bold text-text-primary"
+                    >
+                        Ooops!
+                    </h2>
+                    <p
+                        class="text-xl text-gray-600 text-balance max-w-lg mx-auto"
+                    >
+                        Questa pagina non esiste o è stata spostata.
+                    </p>
+                </div>
+
+                <div
+                    class="pt-4 flex flex-col sm:flex-row gap-4 justify-center"
+                >
+                    <Button
+                        href="/"
+                        variant="primary"
+                        class="shadow-lg hover:shadow-xl"
+                    >
+                        Torna in Homepage
+                    </Button>
+                </div>
+            </div>
+        </Container>
+    </section>
+</Layout>
