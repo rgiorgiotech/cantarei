@@ -131,21 +131,35 @@ const currentPath = Astro.url.pathname;
 </header>
 
 <script>
-    const menuBtn = document.getElementById("mobile-menu-button");
-    const closeBtn = document.getElementById("mobile-menu-close-button");
-    const menu = document.getElementById("mobile-menu");
-    const links = document.querySelectorAll(".mobile-link");
+    // Funzione che inizializza il menu (la chiameremo a ogni cambio pagina)
+    function initMobileMenu() {
+        const menuBtn = document.getElementById("mobile-menu-button");
+        const closeBtn = document.getElementById("mobile-menu-close-button");
+        const menu = document.getElementById("mobile-menu");
+        const links = document.querySelectorAll(".mobile-link");
 
-    function toggleMenu() {
-        menu?.classList.toggle("hidden");
-        menu?.classList.toggle("flex");
-        document.body.classList.toggle("overflow-hidden");
+        // Funzione toggle
+        const toggleMenu = () => {
+            menu?.classList.toggle("hidden");
+            menu?.classList.toggle("flex");
+            // Blocca lo scroll del body quando il menu è aperto
+            document.body.classList.toggle("overflow-hidden");
+        };
+
+        // Aggiungi i listener
+        menuBtn?.addEventListener("click", toggleMenu);
+        closeBtn?.addEventListener("click", toggleMenu);
+
+        links.forEach((link) => {
+            link.addEventListener("click", toggleMenu);
+        });
     }
 
-    menuBtn?.addEventListener("click", toggleMenu);
-    closeBtn?.addEventListener("click", toggleMenu);
+    // ESEGUIAMO LA FUNZIONE SU DUE EVENTI:
 
-    links.forEach((link) => {
-        link.addEventListener("click", toggleMenu);
-    });
+    // 1. Al primo caricamento assoluto del sito
+    initMobileMenu();
+
+    // 2. Ogni volta che Astro finisce una transizione di pagina
+    document.addEventListener("astro:page-load", initMobileMenu);
 </script>
