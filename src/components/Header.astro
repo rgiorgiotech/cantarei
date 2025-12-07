@@ -131,35 +131,44 @@ const currentPath = Astro.url.pathname;
 </header>
 
 <script>
-    // Funzione che inizializza il menu (la chiameremo a ogni cambio pagina)
     function initMobileMenu() {
-        const menuBtn = document.getElementById("mobile-menu-button");
-        const closeBtn = document.getElementById("mobile-menu-close-button");
+        // Aggiungiamo 'as HTMLElement' per essere sicuri dei tipi
+        const menuBtn = document.getElementById(
+            "mobile-menu-button",
+        ) as HTMLElement | null;
+        const closeBtn = document.getElementById(
+            "mobile-menu-close-button",
+        ) as HTMLElement | null;
         const menu = document.getElementById("mobile-menu");
         const links = document.querySelectorAll(".mobile-link");
 
-        // Funzione toggle
         const toggleMenu = () => {
             menu?.classList.toggle("hidden");
             menu?.classList.toggle("flex");
-            // Blocca lo scroll del body quando il menu è aperto
             document.body.classList.toggle("overflow-hidden");
         };
 
-        // Aggiungi i listener
-        menuBtn?.addEventListener("click", toggleMenu);
-        closeBtn?.addEventListener("click", toggleMenu);
+        // FIX TYPESCRIPT:
+        // 1. Definiamo che 'element' può essere HTMLElement o null
+        // 2. Usiamo 'as HTMLElement' dopo il cloneNode perché di base restituisce un 'Node' generico
+        const cleanListener = (element: HTMLElement | null) => {
+            if (!element) return null;
+            const newElement = element.cloneNode(true) as HTMLElement;
+            element.parentNode?.replaceChild(newElement, element);
+            return newElement;
+        };
+
+        // Puliamo e riassegnamo
+        const cleanMenuBtn = cleanListener(menuBtn);
+        const cleanCloseBtn = cleanListener(closeBtn);
+
+        cleanMenuBtn?.addEventListener("click", toggleMenu);
+        cleanCloseBtn?.addEventListener("click", toggleMenu);
 
         links.forEach((link) => {
             link.addEventListener("click", toggleMenu);
         });
     }
 
-    // ESEGUIAMO LA FUNZIONE SU DUE EVENTI:
-
-    // 1. Al primo caricamento assoluto del sito
-    initMobileMenu();
-
-    // 2. Ogni volta che Astro finisce una transizione di pagina
     document.addEventListener("astro:page-load", initMobileMenu);
 </script>
