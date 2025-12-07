@@ -1,17 +1,21 @@
 ---
 // src/layouts/Layout.astro
 import "../styles/global.css";
-import Header from "../components/Header.astro"; // Lo creeremo tra poco
-import Footer from "../components/Footer.astro"; // Lo creeremo tra poco
-import { ViewTransitions } from "astro:transitions"; // Chicca moderna: navigazione fluida tipo SPA
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import { ViewTransitions } from "astro:transitions";
 
 interface Props {
     title: string;
     description?: string;
+    simplePage?: boolean;
 }
 
-const { title, description = "Coro Polifonico Canta Rei APS - Palermo" } =
-    Astro.props;
+const {
+    title,
+    description = "Coro Polifonico Canta Rei APS - Palermo",
+    simplePage = false,
+} = Astro.props;
 ---
 
 <!doctype html>
@@ -20,7 +24,7 @@ const { title, description = "Coro Polifonico Canta Rei APS - Palermo" } =
         <meta charset="UTF-8" />
         <meta name="description" content={description} />
         <meta name="viewport" content="width=device-width" />
-        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <link rel="icon" type="image/png" href="/assets/canta-rei-logo.png" />
         <meta name="generator" content={Astro.generator} />
         <title>{title} | Canta Rei APS</title>
         <ViewTransitions />
@@ -28,12 +32,12 @@ const { title, description = "Coro Polifonico Canta Rei APS - Palermo" } =
     <body
         class="flex flex-col min-h-screen bg-background-primary text-text-primary font-sans antialiased"
     >
-        <Header />
+        {!simplePage && <Header />}
 
         <main class="flex-grow animate-fade-in">
             <slot />
         </main>
 
-        <Footer />
+        {!simplePage && <Footer />}
     </body>
 </html>
